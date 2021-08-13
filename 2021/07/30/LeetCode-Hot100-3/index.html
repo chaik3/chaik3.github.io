@@ -20,15 +20,15 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="给定一个字符串 s ，请你找出其中不含有重复字符的最长子串的长度。 @3. 无重复字符的最长子串leetcode-cn.com&#x2F;problems&#x2F;longest-substring-without-repeating-characters   解法一暴力解法，用两个循环穷举所有子串，然后再用一个函数判断该子串中有没有重复的字符。 1234567891011121314151617181920212">
+  <meta name="description" content="给定一个字符串 s ，请你找出其中不含有重复字符的最长子串的长度。 @3. 无重复字符的最长子串leetcode-cn.com&#x2F;problems&#x2F;longest-substring-without-repeating-characters">
 <meta property="og:type" content="article">
 <meta property="og:title" content="LeetCode Hot100-3">
 <meta property="og:url" content="http://example.com/2021/07/30/LeetCode-Hot100-3/index.html">
 <meta property="og:site_name" content="Keke">
-<meta property="og:description" content="给定一个字符串 s ，请你找出其中不含有重复字符的最长子串的长度。 @3. 无重复字符的最长子串leetcode-cn.com&#x2F;problems&#x2F;longest-substring-without-repeating-characters   解法一暴力解法，用两个循环穷举所有子串，然后再用一个函数判断该子串中有没有重复的字符。 1234567891011121314151617181920212">
+<meta property="og:description" content="给定一个字符串 s ，请你找出其中不含有重复字符的最长子串的长度。 @3. 无重复字符的最长子串leetcode-cn.com&#x2F;problems&#x2F;longest-substring-without-repeating-characters">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-07-30T01:47:29.000Z">
-<meta property="article:modified_time" content="2021-08-11T15:07:36.232Z">
+<meta property="article:modified_time" content="2021-08-12T07:30:25.508Z">
 <meta property="article:author" content="chaik3">
 <meta property="article:tag" content="LeeCode Hot100">
 <meta name="twitter:card" content="summary">
@@ -136,7 +136,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">4</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">6</span></a>
 
   </li>
   </ul>
@@ -197,7 +197,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-08-11 23:07:36" itemprop="dateModified" datetime="2021-08-11T23:07:36+08:00">2021-08-11</time>
+                <time title="修改时间：2021-08-12 15:30:25" itemprop="dateModified" datetime="2021-08-12T15:30:25+08:00">2021-08-12</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -237,6 +237,8 @@
         <blockquote><p>给定一个字符串 s ，请你找出其中不含有重复字符的<strong>最长子串</strong>的长度。</p>
 <footer><strong>@3. 无重复字符的最长子串</strong><cite><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/longest-substring-without-repeating-characters">leetcode-cn.com/problems/longest-substring-without-repeating-characters</a></cite></footer></blockquote> 
 
+<span id="more"></span>
+
 <h2 id="解法一"><a href="#解法一" class="headerlink" title="解法一"></a>解法一</h2><p>暴力解法，用两个循环穷举所有子串，然后再用一个函数判断该子串中有没有重复的字符。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">lengthOfLongestSubstring</span><span class="params">(String s)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> n = s.length();</span><br><span class="line">        <span class="keyword">int</span> ans = <span class="number">0</span>;<span class="comment">//保存当前得到满足条件的子串的最大值</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++) &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> j = i + <span class="number">1</span>; j &lt;= n; j++) &#123;</span><br><span class="line">                <span class="keyword">if</span> (allUnique(s, i, j)) &#123;</span><br><span class="line">                    ans = Math.max(ans, j - i); <span class="comment">//更新 ans return ans;</span></span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">allUnique</span><span class="params">(String s, <span class="keyword">int</span> start, <span class="keyword">int</span> end)</span> </span>&#123; </span><br><span class="line">        Set&lt;Character&gt; set = <span class="keyword">new</span> HashSet&lt;&gt;();</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = start; i &lt; end; i++) &#123;</span><br><span class="line">            Character ch = s.charAt(i);</span><br><span class="line">            <span class="keyword">if</span> (set.contains(ch)) <span class="keyword">return</span> <span class="keyword">false</span>; <span class="comment">//判断字符在不在 set 中 </span></span><br><span class="line">            set.add(ch);<span class="comment">//不在的话将该字符添加到 set 中</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
@@ -269,7 +271,10 @@
     <a href="/2021/07/29/LeetCode-Hot100-2/" rel="prev" title="LeetCode Hot100-2">
       <i class="fa fa-chevron-left"></i> LeetCode Hot100-2
     </a></div>
-      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2021/07/31/LeetCode-Hot100-4/" rel="next" title="LeetCode Hot100-4">
+      LeetCode Hot100-4 <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
       </footer>
     
@@ -344,7 +349,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">4</span>
+          <span class="site-state-item-count">6</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -399,13 +404,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">4k</span>
+    <span title="站点总字数">8k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">4 分钟</span>
+    <span title="站点阅读时长">7 分钟</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
   </div>
