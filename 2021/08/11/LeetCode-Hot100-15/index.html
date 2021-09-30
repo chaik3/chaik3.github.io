@@ -28,7 +28,7 @@
 <meta property="og:description" content="实现获取下一个排列的函数，算法需要将给定数字序列重新排列成字典序中下一个更大的排列（即，组合出下一个更大的整数）。 如果不存在下一个更大的排列，则将数字重新排列成最小的排列（即升序排列）。 必须原地修改，只允许使用额外常数空间。 @31. 下一个排列leetcode-cn.com&#x2F;problems&#x2F;next-permutation">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-08-11T15:46:19.000Z">
-<meta property="article:modified_time" content="2021-08-19T09:46:50.828Z">
+<meta property="article:modified_time" content="2021-09-30T03:49:28.058Z">
 <meta property="article:author" content="chaik3">
 <meta property="article:tag" content="LeetCode Hot100">
 <meta name="twitter:card" content="summary">
@@ -197,7 +197,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-08-19 17:46:50" itemprop="dateModified" datetime="2021-08-19T17:46:50+08:00">2021-08-19</time>
+                <time title="修改时间：2021-09-30 11:49:28" itemprop="dateModified" datetime="2021-09-30T11:49:28+08:00">2021-09-30</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -215,7 +215,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>162</span>
+              <span>1.2k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -240,6 +240,27 @@
 <footer><strong>@31. 下一个排列</strong><cite><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/next-permutation">leetcode-cn.com/problems/next-permutation</a></cite></footer></blockquote>
 
 <span id="more"></span>
+
+<h2 id="算法思路"><a href="#算法思路" class="headerlink" title="算法思路"></a>算法思路</h2><p>如何得到一个字典序中下一个更大的排列，可以这样分析：</p>
+<ol>
+<li>这个数应比给定的数字序列大，因此只要将后面的某一位大数与前面的某一位小数交换就能得到一个更大的数。</li>
+<li>这个数增大的幅度应尽可能的小样才满足“下一个排列与当前排列紧邻“的要求。为了满足这个要求，我们需要：<ul>
+<li>在<strong>尽可能靠右的低位</strong>进行交换，需要从后向前查找</li>
+<li>将一个<strong>尽可能小的「大数」</strong>与前面的「小数」交换。比如 123465，下一个排列应该把 5 和 4 交换而不是把 6 和 4 交换</li>
+<li>将「大数」换到前面后，需要<strong>将「大数」后面的所有数重置为升序</strong>，升序排列就是最小的排列。以 123465 为例：首先按照上一步，交换 5 和 4，得到 123564；然后需要将 5 之后的数重置为升序，得到 123546。显然 123546 比 123564 更小，123546 就是 123465 的下一个排列</li>
+</ul>
+</li>
+</ol>
+<h2 id="算法过程"><a href="#算法过程" class="headerlink" title="算法过程"></a>算法过程</h2><ol>
+<li><strong>从后向前</strong>查找第一个<strong>相邻升序</strong>的元素对 <code>(i,j)</code>，满足 <code>A[i] &lt; A[j]</code>。此时 <code>[j,end)</code> 必然是降序</li>
+<li>这时 <code>[j,end)</code> 必然是降序，逆置 <code>[j,end)</code>，使其升序</li>
+<li>在 <code>[j,end)</code>  中<strong>从前向后</strong>查找第一个满足 <code>A[i] </code>&lt;<code>A[k]</code> 的 <code>k</code>。<code>A[i]</code>、<code>A[k]</code> 分别就是上文所说的「小数」、「大数」</li>
+<li>将 <code>A[i]</code> 与 <code>A[k]</code> 交换</li>
+<li>如果在步骤 1 找不到符合的相邻元素对，说明当前 <code>[begin,end)</code> 为一个降序顺序，则直接对数列排序，使其升序</li>
+</ol>
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">nextPermutation</span><span class="params">(<span class="keyword">int</span>[] nums)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> len = nums.length;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = len - <span class="number">1</span>; i &gt; <span class="number">0</span>; i--) &#123;</span><br><span class="line">                <span class="keyword">if</span> (nums[i] &gt; nums[i - <span class="number">1</span>]) &#123;</span><br><span class="line">                    Arrays.sort(nums, i, len);</span><br><span class="line">                    <span class="keyword">for</span> (<span class="keyword">int</span> j = i; j &lt;len; j++) &#123;</span><br><span class="line">                        <span class="keyword">if</span> (nums[j] &gt; nums[i - <span class="number">1</span>]) &#123;</span><br><span class="line">                            <span class="keyword">int</span> temp = nums[j];</span><br><span class="line">                            nums[j] = nums[i - <span class="number">1</span>];</span><br><span class="line">                            nums[i - <span class="number">1</span>] = temp;</span><br><span class="line">                            <span class="keyword">return</span>;</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">    	Arrays.sort(nums);</span><br><span class="line">		<span class="keyword">return</span>;  </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>时间复杂度：O(N)，其中 N 为给定序列的长度。我们至多只需要扫描两次序列，以及进行一次反转操作。<br>空间复杂度：O(1)，只需要常数的空间存放若干变量。</p>
 
     </div>
 
@@ -320,6 +341,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%97%E6%B3%95%E6%80%9D%E8%B7%AF"><span class="nav-number">1.</span> <span class="nav-text">算法思路</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%97%E6%B3%95%E8%BF%87%E7%A8%8B"><span class="nav-number">2.</span> <span class="nav-text">算法过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81"><span class="nav-number">3.</span> <span class="nav-text">代码</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -390,13 +412,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">11k</span>
+    <span title="站点总字数">14k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">10 分钟</span>
+    <span title="站点阅读时长">13 分钟</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
   </div>
